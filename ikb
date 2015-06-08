@@ -1,0 +1,4 @@
+assert(ikb_list([isa(andrewDougherty,aiResearcher)],baseMt)).
+assert(ikb_list([not(isa(andrewDougherty,aiResearcher))],baseMt)).
+assert(ikb_list([isa(andrewDougherty,spacecraft),genls(spacecraft,vehicle)],baseMt)).
+assert(ikb_list([isa(andrewDougherty,basic)],baseMt)).

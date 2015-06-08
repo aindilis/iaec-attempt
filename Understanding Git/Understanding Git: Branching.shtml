@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="Understanding%20Git:%20Branching_files/stylesheet.css">
+<title>Understanding Git: Branching</title>
+</head>
+<body>
+
+
+
+<div class="title">
+<h1>Understanding Git: Branching</h1>
+</div>
+
+<!--
+nav-header.shtml
+
+Navigation bar, to be placed in header. Contains links to the basic sections of
+this site.
+
+-->
+<div class="nav-header">
+
+<div class="nav-header-top">
+ <b>Navigation</b>
+</div>
+
+<div>
+ <b><a href="http://www.sbf5.com/%7Ecduan/" alt="Home page">Home</a></b>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/download/">Downloads</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/technical/">Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/writings/">Non-Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/misc/">Miscellaneous</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/links.shtml">Links</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/nav-help.shtml">Help</a>
+</div>
+
+<div>
+  <a href="http://cd2dc.tumblr.com/about">BBQ and Fried Chicken</a>
+</div>
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-4775089164349825";
+/* Ad */
+google_ad_slot = "3363410592";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript" src="Understanding%20Git:%20Branching_files/show_ads.js">
+</script>
+
+</div>
+
+
+<div class="content">
+
+<div class="sub-nav-header">
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/">Introduction</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-1.shtml">1: Repositories</a></span>
+<span>2: Branching</span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-3.shtml">3: Merging</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-4.shtml">4: Collaborating</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-5.shtml">5: Rebasing</a></span>
+</div>
+
+<h2>In This Section</h2>
+
+<ul>
+<li><a href="#branching-purpose">The Purpose of Branching</a></li>
+<li><a href="#create-branch">Creating a Branch</a></li>
+<li><a href="#switch-branch">Switching Between Branches</a></li>
+<li><a href="#branch-commands">Related Commands</a></li>
+<li><a href="#branch-patterns">Common Branching Use Patterns</a></li>
+</ul>
+
+<h2 id="branching-purpose">The Purpose of Branching</h2>
+
+<p>Say you are working on a paper. You’ve gotten a first draft out, submitted
+for review. You then get a new batch of data, and you’re in the process of
+integrating it into the paper. Halfway in, however, the review committee calls
+you up and tells you that you need to change some of your section headings to
+conform to format specifications. What do you do?</p>
+
+<p>Obviously you don’t want to send them your half-baked revisions with
+corrected headings. What you want to do is jump back to the version you sent
+out, change the headings on that version, and send off that copy, all the while
+keeping your recent work safely stored somewhere else.</p>
+
+<p>This is the idea behind <b>branching,</b> and Git makes it easy to do.</p>
+
+<p><b>Note on terminology</b>: The terms “branch” and
+“head” are nearly synonymous in Git. Every branch is represented by
+one head, and every head represents one branch. Sometimes, “branch”
+will be used to refer to a head and the entire history of ancestor commits
+preceding that head, whereas “head” will be used to refer
+exclusively to a single commit object, the most recent commit in the branch.</p>
+
+<h2 id="create-branch">Creating a Branch</h2>
+
+<p>To create a branch, say your repository looks like this:</p>
+
+<blockquote><pre>(A) -- (B) -- (C)
+               |
+             master
+               |
+              HEAD
+</pre></blockquote>
+
+<p>where (B) was the version you sent to the conference and (C) is your new
+revision state. (I’m dropping the arrowheads because they always point to
+the left.)</p>
+
+<p>To jump back to commit (B) and start new work from there, you first need to
+know how to reference the commit. You could either use <tt>git log</tt> to get
+the SHA1 name of (B), or you could use <i>HEAD^</i> to retrieve it (as you will
+remember from the previous page, <i>HEAD^</i> means the parent of the
+<i>HEAD</i> commit).</p>
+
+<p>Now, we use the <tt>git branch</tt> command:
+
+</p><blockquote><pre>git branch [new-head-name] [reference-to-(B)]
+</pre></blockquote>
+
+<p>or, for example:
+
+</p><blockquote><pre>git branch fix-headers HEAD^
+</pre></blockquote>
+
+<p>This command will create a new head with the given name, and point that head
+at the requested commit object. If the commit object is left out, it will point
+to <i>HEAD</i>.
+
+</p><p>Now our commit tree looks like this:
+
+</p><blockquote><pre>(A) -- (B) ------- (C)
+        |           |
+   fix-headers    master
+                    |
+                   HEAD
+</pre></blockquote>
+
+<h2 id="switch-branch">Switching Between Branches</h2>
+
+<p>In order to start working on the headers, you need to set the fix-headers
+head to be the current head. This is done with <tt>git checkout</tt>:
+
+</p><blockquote><pre>git checkout [head-name]
+</pre></blockquote>
+
+<p>This command does the following:</p>
+
+<ul>
+<li>Points <i>HEAD</i> to the commit object specified by <i>[head-name]</i></li>
+<li>Rewrites all the files in the directory to match the files stored in the new
+  <i>HEAD</i> commit.</li>
+</ul>
+
+<p><b>Important note</b>: if there are any uncommitted changes when you run
+<tt>git checkout</tt>, Git will behave very strangely. The strangeness is
+predictable and sometimes useful, but it is best to avoid it. All you need to
+do, of course, is commit all the new changes before checking out the new
+head.</p>
+
+<p>After checking out the <i>fix-headers</i> head, you fix the headers. Now you
+add and commit the changes as above. The resulting repository looks like
+this:</p>
+
+<blockquote><pre>         +-------------- (D)
+        /                 |
+(A) -- (B) -- (C)         |
+               |          |
+             master  fix-headers
+                          |
+                         HEAD
+</pre></blockquote>
+
+<p>(You can see now why it’s called “branching”: the commit
+tree has grown a new branch. Note that the angle of the line connecting
+(B) and (D) is irrelevant; pointers do not store whether they are
+horizontal or slanted.)</p>
+
+<p>The ancestry of <i>master</i> is (C), (B), (A). The ancestry of
+<i>fix-headers</i> is (D), (B), (A). You can see this with <tt>git log</tt>.</p>
+
+<h2 id="branch-commands">Related Commands</h2>
+<p>Other useful commands at this point:</p>
+
+<ul>
+<li><tt>git branch</tt> with no arguments lists the existing heads, with a star
+    next to the current head.</li>
+<li><tt>git diff [head1]..[head2]</tt> shows the diff between the commits
+    referenced by <i>head2</i> and <i>head1</i>.</li>
+<li><tt>git diff [head1]...[head2]</tt> (three dots) shows the diff between
+    <i>head2</i> and the common ancestor of <i>head1</i> and <i>head2</i>. For
+    example, <tt>diff master...fix-headers</tt> above would show the diff
+    between (D) and (B). </li><li><tt>git log [head1]..[head2]</tt> shows the change
+    log between <i>head2</i> and the common ancestor of <i>head1</i> and
+    <i>head2</i>. With three dots, it also shows the changes between
+    <i>head1</i> and the common ancestor; this is not so useful. (Switching
+    <i>head1</i> and <i>head2</i>, on the other hand, is very
+    useful.)</li>
+</ul>
+
+<h2 id="branch-patterns">Common Branching Use Patterns</h2>
+
+<p>A common way to use Git branching is to maintain one “main” or
+“trunk” branch and create new branches to implement new features.
+Often the default Git branch, <i>master</i>, is used as the main branch.</p>
+
+<p>So, in the example above, it may have been better to leave <i>master</i> at
+(B), where the paper was submitted to the reviewers. You could then start a new
+branch to store changes regarding new data.</p>
+
+<p>Ideally, in this pattern, <b>the <i>master</i> branch is always in a releaseable
+state.</b> Other branches will contain half-finished work, new features, and so on.</p>
+
+<p>This pattern is particularly important when there are multiple developers
+working on a single project. If all developers are adding commits in sequence to
+a single branch, then new features need to be added in a single commit, in order
+not to cause the branch to become unusable. However, if each developer creates a
+new branch to make a new feature, then commits can be made at any time, whether
+or not they are unfinished.</p>
+
+<p>This is what Git users mean when they say that <b>commits are cheap.</b> If
+you are working on your own branch, there is no reason you need to be
+particularly careful about what you commit to the repository. It won’t
+affect anything else.</p>
+
+<p><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-3.shtml">Go on to the next section: Merging</a></p>
+
+</div>
+
+
+<div class="footer">
+
+Copyright © 2000-2015 Charles Duan.<br>
+
+My e-mail address is “website.comments” (without the quotes)
+followed by an @ symbol, my first initial and last name concatenated, a dot, and
+“com.”
+
+</div>
+
+
+
+
+</body></html>

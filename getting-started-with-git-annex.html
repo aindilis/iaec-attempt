@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Getting started with git-annex</title>
+<!-- 2014-12-22 Mon 15:27 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Lee Hinman" />
+<link rel="stylesheet" href="http://dakrone.github.io/org.css" type="text/css" />
+<link rel="stylesheet" href="http://dakrone.github.io/org.css" type="text/css" /><style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<style type="text/css">
+ pre.src {background-color: #FFFFFF; color: #333333;}</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Getting started with git-annex</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Introduction</a></li>
+<li><a href="#sec-2">Why git-annex?</a>
+<ul>
+<li><a href="#sec-2-1">Backups</a></li>
+<li><a href="#sec-2-2">Location tracking</a></li>
+<li><a href="#sec-2-3">Protection</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">Setting up your first git-annex repository</a>
+<ul>
+<li><a href="#sec-3-1">Initializing and adding the first files</a></li>
+<li><a href="#sec-3-2">Understanding what git-annex does with files</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">Adding a second location for data (USB drive)</a>
+<ul>
+<li><a href="#sec-4-1">Copying data between locations</a></li>
+<li><a href="#sec-4-2">Finding out where your files are</a></li>
+<li><a href="#sec-4-3">Removing unneeded data</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">Adding a third location (a remote computer using SSH)</a></li>
+<li><a href="#sec-6">Other things to check out</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+In this article, I am hoping to show how to set up distributed file backups
+using <code>git-annex</code>. When I started using git-annex I found that while the
+documentation is plentiful and quite helpful, it's hard to know what exactly to
+look for unless already familiar with git-annex. I also hard a hard time
+wrapping my head around some of the concepts associated with it. I'm hoping this
+will be useful to anyone interested in using git-annex.
+</p>
+
+<p>
+<a href="http://git-annex.branchable.com/">Git-annex</a> is a tool that adds an abstraction on top of the git distributed
+version control system (VCS). It allows you to use git to manage file locations
+and directory history without actually committing large files into the git
+repository itself (because git does not handle large binary files particularly
+well).
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Why git-annex?</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+So why git-annex? Why not manage this myself using <code>rsync</code>, or <code>cp</code>, or <code>&lt;insert
+pay service&gt;</code>? Well, there are really 3 main reasons, backups, location
+tracking, and protection.
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Backups</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Backups. Ugh. It seems like almost everyone with any non-trivial amount of data
+has a different way of handling this. When I started looking at backups, I was
+really distressed by some of the solutions. For instance, things like Apple's
+"Time Machine" only work with HFS+ which makes it totally useless for multiple
+operating systems. I also wanted something where accessing information was
+possible without having to install a particular piece of software, and was
+designed in the manner of "maybe in the future, not EVERYONE will be using X". I
+think git-annex has a great design page on this called "<a href="http://git-annex.branchable.com/future_proofing/">future proofing</a>".
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Location tracking</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+This also kind of ties into the backups. I have 3-4 large external hard drives
+that I end up backing up most of my important data, and I can never remember
+which drive contains which content. git-annex has a nice way of tracking this
+through the "whereis" command.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Protection</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Data is only as good as it's resiliency, and not being able to tell if data is
+corrupted is almost as bad as having corrupted data. git-annex can perform
+"fsck" on repository contents to detect corruption. It can also be configured to
+ensure that you never remove the last copy of the data, or that you always keep
+a certain number of copies of data. Each repository "remote" can be configured
+with a variable amount of trust as well.
+</p>
+
+<p>
+Okay, enough about the <b>why</b> of git-annex, let's talk about the <b>how</b>.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Setting up your first git-annex repository</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In this example I'm going create a new repository of files, in this case,
+some images I have laying around. Any files will work though!
+</p>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">Initializing and adding the first files</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+A git-annex distribution is just like a git repository, meaning it's a directory
+that has had <code>git init</code> run in it, so let's do exactly that:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~()% mkdir ~/myrepo
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~()% cd myrepo
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo()% git init
+Initialized empty Git repository<span style="color: #0000FF;"> in</span> /Users/hinmanm/myrepo/.git/
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)%
+</pre>
+</div>
+
+<p>
+Great, that was easy.
+</p>
+
+<p>
+One thing in addition to this is that we need to initialize this as a git-annex
+repository as well, along with the name of this repository. Since I'm running
+this on my laptop, I'm going to initialize git-annex with "laptop" as the name
+of this repository.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex init <span style="color: #008000;">"laptop"</span>
+init laptop ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)%
+</pre>
+</div>
+
+<p>
+Awesome, everything is set up, now all we need to do is to add some files. I
+have a great <a href="https://www.youtube.com/watch?v=JEpsKnWZrJ8">video of Grace Hopper explaining a nanosecond</a> that I'd like to
+backup, so I'll copy it into this folder and add it to the repository using <code>git
+annex add</code>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% cp -v ~/Downloads/Grace-Hopper-Nanoseconds.mp4 .
+/Users/hinmanm/Downloads/Grace-Hopper-Nanoseconds.mp4 -&gt; ./Grace-Hopper-Nanoseconds.mp4
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master*)% git annex add Grace-Hopper-Nanoseconds.mp4
+add Grace-Hopper-Nanoseconds.mp4 ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master*)%
+</pre>
+</div>
+
+<p>
+Don't forget to commit the file!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master*)% git commit -m <span style="color: #008000;">"Added video of Grace Hopper explaining the nanosecond"</span>
+[master (root-commit) ea6e382] Added video of Grace Hopper explaining the nanosecond
+ <span style="color: #D0372D;">1</span> file changed, <span style="color: #D0372D;">1</span> insertion(+)
+ create mode <span style="color: #D0372D;">120000</span> Grace-Hopper-Nanoseconds.mp4
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)%
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Understanding what git-annex does with files</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+It turns out that when we add the files, git-annex is not actually adding the
+content of the files to the git repo, you can see this using <code>ls -lh</code>, which
+will show that "Grace-Hopper-Nanoseconds.mp4" is now a symlink:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% ls -lh
+total <span style="color: #D0372D;">8</span>
+lrwxr-xr-x <span style="color: #D0372D;">1</span> hinmanm staff <span style="color: #D0372D;">198B</span> Dec <span style="color: #D0372D;">20</span> <span style="color: #D0372D;">12:04</span> Grace-Hopper-Nanoseconds.mp4@ -&gt;
+.git/annex/objects/5X/Gv/SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4/SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)%
+</pre>
+</div>
+
+<p>
+git-annex computes the checksum of the file and uses that for the actual file
+name inside of the <code>.git/annex/objects</code> folder. You can still access the
+original file by opening the symlink.
+</p>
+
+<p>
+So far, we haven't really done much other than adding a file, so let's use
+git-annex to maintain a second location for this repository.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Adding a second location for data (USB drive)</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+I'm going to use an external USB drive as the second drive, because that's
+usually where I perform backups, however, git-annex supports anything that could
+be a git repository, meaning github, or another computer, it even supports a lot
+of <a href="http://git-annex.branchable.com/special_remotes/">special remotes</a> like backing up the S3.
+</p>
+
+<p>
+I am using a USB drive mounted at <code>/Volumes/MINIDRIVE1/</code>, so adjust as needed to
+a different location on disk, wherever you device is mounted. You can also use
+another folder if you don't have a USB drive handy.
+</p>
+
+<p>
+First, let's make a folder on the USB drive and initialize it as both a regular
+git repo and a git-annex repository, but this time, named "usbdrive"
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% mkdir /Volumes/MINIDRIVE1/myrepo
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% cd /Volumes/MINIDRIVE1/myrepo
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo()% git init
+Initialized empty Git repository<span style="color: #0000FF;"> in</span> /Volumes/MINIDRIVE1/myrepo/.git/
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% git annex init <span style="color: #008000;">"usbdrive"</span>
+init usbdrive 
+  Detected a filesystem without fifo support.
+
+  Disabling ssh connection caching.
+ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)%
+</pre>
+</div>
+
+<p>
+Next we need to let each of the two locations <code>~/myrepo</code> and
+<code>/Volumes/MINIDRIVE1/myrepo</code> know about each other. This is accomplished by
+adding each location as a remote, using the <code>git remote</code> command.
+</p>
+
+<p>
+First we'll let the original repo know about the USB drive
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% cd ~/myrepo
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git remote add usbdrive /Volumes/MINIDRIVE1/myrepo
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)%
+</pre>
+</div>
+
+<p>
+And then let the usb drive know about the laptop
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% cd /Volumes/MINIDRIVE1/myrepo/
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% git remote add laptop ~/myrepo
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% cd ~/myrepo
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)%
+</pre>
+</div>
+
+<p>
+Now that each repository knows about the other one, you can use the <code>git annex
+sync</code> command to synchronize the git state between each, so if we run it in each
+folder we can see that the folder on the USB drive has been updated with the
+name of the file in the repository
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex sync
+commit  ok
+pull usbdrive 
+warning: no common commits
+remote: Counting objects: <span style="color: #D0372D;">5,</span> done.
+remote: Compressing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">3/3</span>), done.
+remote: Total <span style="color: #D0372D;">5</span> (delta <span style="color: #D0372D;">0</span>), reused <span style="color: #D0372D;">0</span> (delta <span style="color: #D0372D;">0</span>)
+Unpacking objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">5/5</span>), done.
+From /Volumes/MINIDRIVE1/myrepo
+ * [new branch]      git-annex  -&gt; usbdrive/git-annex
+ok
+(merging usbdrive/git-annex into git-annex...)
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+push usbdrive 
+Counting objects: <span style="color: #D0372D;">17,</span> done.
+Delta compression using up to <span style="color: #D0372D;">4</span> threads.
+Compressing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">13/13</span>), done.
+Writing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">17/17</span>), <span style="color: #D0372D;">1.60</span> KiB | <span style="color: #D0372D;">0</span> bytes/s, done.
+Total <span style="color: #D0372D;">17</span> (delta <span style="color: #D0372D;">1</span>), reused <span style="color: #D0372D;">0</span> (delta <span style="color: #D0372D;">0</span>)
+To /Volumes/MINIDRIVE1/myrepo
+ * [new branch]      git-annex -&gt; synced/git-annex
+ * [new branch]      master -&gt; synced/master
+ok
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% cd /Volumes/MINIDRIVE1/myrepo
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% git annex sync
+(merging synced/git-annex into git-annex...)
+commit  ok
+pull laptop 
+From /Users/hinmanm/myrepo
+ * [new branch]      git-annex  -&gt; laptop/git-annex
+ * [new branch]      master     -&gt; laptop/master
+ * [new branch]      synced/master -&gt; laptop/synced/master
+
+
+Already up-to-date.
+ok
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% ls -lh
+total <span style="color: #D0372D;">64</span>
+lrwxrwxrwx <span style="color: #D0372D;">1</span> hinmanm staff <span style="color: #D0372D;">198B</span> Dec <span style="color: #D0372D;">20</span> <span style="color: #D0372D;">13:09</span> Grace-Hopper-Nanoseconds.mp4@ -&gt;
+.git/annex/objects/5X/Gv/SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4/SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)%
+</pre>
+</div>
+
+<p>
+However, you can see that the content hasn't actually been copied over, only the
+metadata (the symlink), you can verify this with the file command
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% file Grace-Hopper-Nanoseconds.mp4
+Grace-Hopper-Nanoseconds.mp4: broken symbolic link to
+.git/annex/objects/5X/Gv/SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4/SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">Copying data between locations</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Okay, this would be pretty crummy if all it did was keep track of metadata, but
+git-annex can also shuffle data between different locations, with a variety of
+methods.
+</p>
+
+<p>
+The easiest way to ensure the data is an <b>all</b> places is to use the <code>sync</code>
+command with the <code>--content</code> flag, so if we run this in either repository, the
+content will be copied over
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% git annex sync --content
+commit  ok
+pull laptop 
+ok
+get Grace-Hopper-Nanoseconds.mp4 (from laptop...) 
+SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4
+     <span style="color: #D0372D;">5769029</span> <span style="color: #D0372D;">100%</span>   <span style="color: #D0372D;">60.12MB/s</span>    <span style="color: #D0372D;">0:00:00</span> (xfer#1, to-check=<span style="color: #D0372D;">0/1</span>)
+
+sent <span style="color: #D0372D;">5769900</span> bytes  received <span style="color: #D0372D;">42</span> bytes  <span style="color: #D0372D;">3846628.00</span> bytes/sec
+total size is <span style="color: #D0372D;">5769029</span>  speedup is <span style="color: #D0372D;">1.00</span>
+ok
+pull laptop 
+ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+push laptop 
+Counting objects: <span style="color: #D0372D;">5,</span> done.
+Delta compression using up to <span style="color: #D0372D;">4</span> threads.
+Compressing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">4/4</span>), done.
+Writing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">5/5</span>), <span style="color: #D0372D;">454</span> bytes | <span style="color: #D0372D;">0</span> bytes/s, done.
+Total <span style="color: #D0372D;">5</span> (delta <span style="color: #D0372D;">1</span>), reused <span style="color: #D0372D;">0</span> (delta <span style="color: #D0372D;">0</span>)
+To /Users/hinmanm/myrepo
+ * [new branch]      git-annex -&gt; synced/git-annex
+ok
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% file Grace-Hopper-Nanoseconds.mp4
+Grace-Hopper-Nanoseconds.mp4: ISO Media, MPEG v4 system, version <span style="color: #D0372D;">2</span>
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)%
+</pre>
+</div>
+
+<p>
+If you don't want the blanket copy that <code>git annex sync --content</code> does, you can
+move data in a much more fine-grained approach by using the <code>move</code> or <code>copy</code>
+commands, for instance:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex move . --to usbdrive
+(merging synced/git-annex into git-annex...)
+move Grace-Hopper-Nanoseconds.mp4 ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+</pre>
+</div>
+
+<p>
+This is moving by copying the file, but git-annex can also copy the file other
+ways, depending on the type of remove it is, however describing them all is out
+of scope for this article.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">Finding out where your files are</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+At any time, you can see where the data is using the <code>whereis</code> command. I'm
+using "." here to signify the whole directory, but you can also use "*", or
+"*.mp4" and all the other things you would expect when using a shell.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex whereis .
+whereis Grace-Hopper-Nanoseconds.mp4 (<span style="color: #D0372D;">1</span> copy) 
+    d6a2baed-8785-4f2a-8b7c-c99190b67647 -- [usbdrive]
+ok
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex copy . --from usbdrive
+copy Grace-Hopper-Nanoseconds.mp4 (from usbdrive...) 
+SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4
+     <span style="color: #D0372D;">5769029</span> <span style="color: #D0372D;">100%</span>    <span style="color: #D0372D;">2.40MB/s</span>    <span style="color: #D0372D;">0:00:02</span> (xfer#1, to-check=<span style="color: #D0372D;">0/1</span>)
+
+sent <span style="color: #D0372D;">5769900</span> bytes  received <span style="color: #D0372D;">42</span> bytes  <span style="color: #D0372D;">2307976.80</span> bytes/sec
+total size is <span style="color: #D0372D;">5769029</span>  speedup is <span style="color: #D0372D;">1.00</span>
+ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex whereis .
+whereis Grace-Hopper-Nanoseconds.mp4 (<span style="color: #D0372D;">2</span> copies) 
+    <span style="color: #D0372D;">69f0a35e-91c7-43c5-9ce0-89af0056b523</span> -- laptop [here]
+    d6a2baed-8785-4f2a-8b7c-c99190b67647 -- [usbdrive]
+ok
+</pre>
+</div>
+
+<p>
+Notice that the only copy of the data is on "usbdrive", then I used the <code>copy</code>
+command to copy it from the USB drive, and then git-annex shows that there are
+two copies, "here" which is the laptop, and on the "usbdrive" remote.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3">Removing unneeded data</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+When you don't want to store the file locally, use the drop command, which will
+remove the file locally, but only after ensuring that at least 1 copy of the
+data is still available somewhere (this number is configurable too).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex drop .
+drop Grace-Hopper-Nanoseconds.mp4 ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% cd /Volumes/MINIDRIVE1/myrepo
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> /Volumes/MINIDRIVE1/myrepo(master)% git annex drop .
+drop Grace-Hopper-Nanoseconds.mp4 (unsafe) 
+  Could only verify the existence of <span style="color: #D0372D;">0</span> out of <span style="color: #D0372D;">1</span> necessary copies
+
+  Rather than dropping this file, try using: git annex move
+
+  (Use --force to override this check, or adjust numcopies.)
+failed
+git-annex: drop: <span style="color: #D0372D;">1</span> failed
+
+hinmanm@Xanadu <span style="color: #D0372D;">1</span> /Volumes/MINIDRIVE1/myrepo(master)%
+</pre>
+</div>
+
+<p>
+Keep in mind that a repository needs to be available in order for git-annex to
+ensure that the data still resides there however. You won't be able to <code>drop</code>
+the file for this repository if the USB drive is disconnected, because git-annex
+can't tell whether the file is still actually on the disk.
+</p>
+
+<p>
+Even if a file's content is removed, any folders as well as the symlink will
+remain (it will be a broken symlink) so you know which files are part of the
+repository. Additionally, you can create branches and revert commits just like
+you would expect because all of the information metadata is stored in the
+regular git repository.
+</p>
+
+<p>
+This is where I really get a lot of value out of git-annex, I have about 40
+gigabytes of photos that will definitely not fit on my laptop's SSD, so I can
+keep the folder hierarchy for every photo I've ever taken, but without having to
+keep track of which of my 3 external USB drives the actual photos exist on.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Adding a third location (a remote computer using SSH)</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+This time, I'll add another repository on a server machine that I have, so that
+I can keep data offsite (or perhaps on a home NAS). I have a machine called
+"corinth", so the first thing I will do is ssh in and initialize a place for the
+data
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~()% ssh corinth
+Last login: Sat Dec <span style="color: #D0372D;">20</span> <span style="color: #D0372D;">13:06:52</span> <span style="color: #D0372D;">2014</span> from dhcp-077-251-118-122.chello.nl
++++Reading .zshenv
++++Reading .zshrc (<span style="color: #0000FF;">for</span> interactive use).
++++Loaded files<span style="color: #0000FF;"> in</span> <span style="color: #D0372D;">0.5055</span> seconds
+
+hinmanm@corinth <span style="color: #D0372D;">0</span> ~()% mkdir myrepo
+
+hinmanm@corinth <span style="color: #D0372D;">0</span> ~()% cd myrepo
+
+hinmanm@corinth <span style="color: #D0372D;">0</span> ~/myrepo()% git init
+Initialized empty Git repository<span style="color: #0000FF;"> in</span> /home/hinmanm/myrepo/.git/
+
+hinmanm@corinth <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex init <span style="color: #008000;">"corinth"</span>
+init corinth ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+</pre>
+</div>
+
+<p>
+And then back on my local machine add the "corinth" repo and synchronize
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git remote add corinth ssh://corinth/home/hinmanm/myrepo
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex sync
+commit  ok
+pull usbdrive 
+From /Volumes/MINIDRIVE1/myrepo
+   <span style="color: #D0372D;">0abc238..9a23674</span>  git-annex  -&gt; usbdrive/git-annex
+ * [new branch]      master     -&gt; usbdrive/master
+ok
+pull corinth 
+warning: no common commits
+remote: Counting objects: <span style="color: #D0372D;">5,</span> done.
+remote: Compressing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">3/3</span>), done.
+Unpacking objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">5/5</span>), done.
+remote: Total <span style="color: #D0372D;">5</span> (delta <span style="color: #D0372D;">0</span>), reused <span style="color: #D0372D;">0</span> (delta <span style="color: #D0372D;">0</span>)
+From ssh://corinth/home/hinmanm/myrepo
+ * [new branch]      git-annex  -&gt; corinth/git-annex
+ok
+(merging corinth/git-annex into git-annex...)
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+push usbdrive 
+Counting objects: <span style="color: #D0372D;">23,</span> done.
+Delta compression using up to <span style="color: #D0372D;">4</span> threads.
+Compressing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">18/18</span>), done.
+Writing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">23/23</span>), <span style="color: #D0372D;">1.96</span> KiB | <span style="color: #D0372D;">0</span> bytes/s, done.
+Total <span style="color: #D0372D;">23</span> (delta <span style="color: #D0372D;">6</span>), reused <span style="color: #D0372D;">0</span> (delta <span style="color: #D0372D;">0</span>)
+To /Volumes/MINIDRIVE1/myrepo
+   <span style="color: #D0372D;">171c1fe..2ea2746</span>  git-annex -&gt; synced/git-annex
+ok
+push corinth 
+Counting objects: <span style="color: #D0372D;">44,</span> done.
+Delta compression using up to <span style="color: #D0372D;">4</span> threads.
+Compressing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">35/35</span>), done.
+Writing objects: <span style="color: #D0372D;">100%</span> (<span style="color: #D0372D;">44/44</span>), <span style="color: #D0372D;">3.66</span> KiB | <span style="color: #D0372D;">0</span> bytes/s, done.
+Total <span style="color: #D0372D;">44</span> (delta <span style="color: #D0372D;">10</span>), reused <span style="color: #D0372D;">0</span> (delta <span style="color: #D0372D;">0</span>)
+To ssh://corinth/home/hinmanm/myrepo
+ * [new branch]      git-annex -&gt; synced/git-annex
+ * [new branch]      master -&gt; synced/master
+ok
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)%
+</pre>
+</div>
+
+<p>
+And now you can move/copy data just like you would expect
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex copy . --from usbdrive
+copy Grace-Hopper-Nanoseconds.mp4 (from usbdrive...) 
+SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4
+     <span style="color: #D0372D;">5769029</span> <span style="color: #D0372D;">100%</span>   <span style="color: #D0372D;">13.06MB/s</span>    <span style="color: #D0372D;">0:00:00</span> (xfer#1, to-check=<span style="color: #D0372D;">0/1</span>)
+
+sent <span style="color: #D0372D;">5769900</span> bytes  received <span style="color: #D0372D;">42</span> bytes  <span style="color: #D0372D;">3846628.00</span> bytes/sec
+total size is <span style="color: #D0372D;">5769029</span>  speedup is <span style="color: #D0372D;">1.00</span>
+ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+
+hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex copy . --to corinth
+copy Grace-Hopper-Nanoseconds.mp4 (checking corinth...) (to corinth...) 
+SHA256E-s5769029--dc383e922caca7a52eb8c44e0d79fdce22e597e667ba29732966e462ac483cf7.mp4
+     <span style="color: #D0372D;">5769029</span> <span style="color: #D0372D;">100%</span>  <span style="color: #D0372D;">624.58kB/s</span>    <span style="color: #D0372D;">0:00:08</span> (xfer#1, to-check=<span style="color: #D0372D;">0/1</span>)
+
+sent <span style="color: #D0372D;">5769900</span> bytes  received <span style="color: #D0372D;">42</span> bytes  <span style="color: #D0372D;">501734.09</span> bytes/sec
+total size is <span style="color: #D0372D;">5769029</span>  speedup is <span style="color: #D0372D;">1.00</span>
+ok
+(Recording state<span style="color: #0000FF;"> in</span> git...)
+</pre>
+</div>
+
+<p>
+And data is now stored in 3 places, one of them offsite
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">hinmanm@Xanadu <span style="color: #D0372D;">0</span> ~/myrepo(master)% git annex whereis .
+whereis Grace-Hopper-Nanoseconds.mp4 (<span style="color: #D0372D;">3</span> copies) 
+    <span style="color: #D0372D;">197ead75-fa13-4277-ac38-576e5279693d</span> -- [corinth]
+    <span style="color: #D0372D;">69f0a35e-91c7-43c5-9ce0-89af0056b523</span> -- laptop [here]
+    d6a2baed-8785-4f2a-8b7c-c99190b67647 -- [usbdrive]
+ok
+</pre>
+</div>
+
+<p>
+This is just scratching the surface, git-annex is a very flexible and
+full-featured application with a lot of documentation. So check it out if this
+article was interesting!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Other things to check out</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>The <a href="http://git-annex.branchable.com/">main git-annex webpage</a> has lots of good information
+</li>
+
+<li>The <a href="http://git-annex.branchable.com/walkthrough/">walkthrough</a> on the git-annex page - a good introduction to git-annex
+similar to the one here that goes through many more features, it's definitely
+worth a look if you found this article interesting.
+</li>
+
+<li>The full-blown <a href="http://git-annex.branchable.com/assistant/">git-annex assistant</a> - you can do all of this with an easier
+web-based application that git-annex ships with called git-annex assistant, if
+you so desire.
+</li>
+
+<li>Add files from URLs using <a href="http://git-annex.branchable.com/tips/using_the_web_as_a_special_remote/">git-annex's "addurl"</a>
+</li>
+
+<li>Keep track of podcasts using "<a href="http://git-annex.branchable.com/tips/downloading_podcasts/">importfeed</a>"
+</li>
+
+<li><a href="http://git-annex.branchable.com/tips/metadata_driven_views/">Metadata driven views</a>, where files can be tagged and the directory can be
+changed to navigate files based on those tags
+</li>
+
+<li>Git-annex's <a href="http://git-annex.branchable.com/special_remotes/">list of special remotes</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Lee Hinman</p>
+<p class="date">Created: 2014-12-22 Mon 15:27</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

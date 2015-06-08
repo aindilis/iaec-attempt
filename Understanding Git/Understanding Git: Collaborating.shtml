@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="Understanding%20Git:%20Collaborating_files/stylesheet.css">
+<title>Understanding Git: Collaborating</title>
+</head>
+<body>
+
+
+
+<div class="title">
+<h1>Understanding Git: Collaborating</h1>
+</div>
+
+<!--
+nav-header.shtml
+
+Navigation bar, to be placed in header. Contains links to the basic sections of
+this site.
+
+-->
+<div class="nav-header">
+
+<div class="nav-header-top">
+ <b>Navigation</b>
+</div>
+
+<div>
+ <b><a href="http://www.sbf5.com/%7Ecduan/" alt="Home page">Home</a></b>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/download/">Downloads</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/technical/">Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/writings/">Non-Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/misc/">Miscellaneous</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/links.shtml">Links</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/nav-help.shtml">Help</a>
+</div>
+
+<div>
+  <a href="http://cd2dc.tumblr.com/about">BBQ and Fried Chicken</a>
+</div>
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-4775089164349825";
+/* Ad */
+google_ad_slot = "3363410592";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript" src="Understanding%20Git:%20Collaborating_files/show_ads.js">
+</script>
+
+</div>
+
+
+<div class="content">
+
+<div class="sub-nav-header">
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/">Introduction</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-1.shtml">1: Repositories</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-2.shtml">2: Branching</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-3.shtml">3: Merging</a></span>
+<span>4: Collaborating</span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-5.shtml">5: Rebasing</a></span>
+</div>
+
+<h2>In This Section</h2>
+
+<ul>
+<li><a href="#other-repositories">Working with Other Repositories</a></li>
+<li><a href="#distributed-vcs">Distributed Version Control</a></li>
+<li><a href="#clone-repository">Copying the Repository</a></li>
+<li><a href="#remote-pull">Receiving Changes from the Remote Repository</a></li>
+<li><a href="#remote-push">Sending Changes to the Remote Repository</a></li>
+<li><a href="#remote-fast-forward">Pushing and Fast Forward Merges</a></li>
+<li><a href="#remote-branches">Adding and Deleting Branches Remotely</a></li>
+<li><a href="#central-repository">Git with a Central Repository</a></li>
+</ul>
+
+<h2 id="other-repositories">Working with Other Repositories</h2>
+
+<p>A key feature of Git is that the repository is stored alongside the working
+copies of the files themselves. This has the advantage that the repository
+stores the entire history of the project, and Git can function without needing
+to connect to an external server.
+
+</p><p>However, this means that, in order to manipulate the repository, you need to
+also have access to the working files. This means that two Git developers
+cannot, by default, share a repository.
+
+</p><p>To share work among developers, Git uses a <b>distributed model</b> of
+version control. It assumes no central repository. It is possible, of course, to
+use one repository as the “central” one, but it is important to
+understand the distributed model first.
+
+</p><h2 id="distributed-vcs">Distributed Version Control</h2>
+
+<p>Say you and your friend want to work on the same paper. Your friend already
+has done some work on it. There are three tasks you need to figure out to do so:
+
+</p><ol>
+<li>How to get from your friend a copy of the work to date.
+</li><li>How to get the changes your friend makes into your own repository.
+</li><li>How to let your friend know about changes you make.
+</li></ol>
+
+<p>Git provides a number of transport protocols for sharing repository
+information, such as SSH and HTTP. The easiest (which you can use for testing)
+is simply accessing both repositories on the same filesystem.</p>
+
+<p>Each protocol is identified by a “remote-specification.” For
+repositories on the same filesystem, the remote-specification is simply the path
+to the other repository.</p>
+
+<h2 id="clone-repository">Copying the Repository</h2>
+
+<p>To make a copy of your friend's repository for your own use, run <tt>git
+clone [remote-specification]</tt>.</p> The <i>[remote-specification]</i>
+identifies the location of your friend's repository, and it can be as simple as
+another folder on the filesystem. Where your friend's repository is accessible
+by a network protocol such as ssh, Git refers to the repository by a URL-like
+name, such as <tt>ssh://server/repository</tt>.
+
+<p>For example, if your friend's repository is located in
+<tt>~/jdoe/project</tt>, you would run:</p>
+
+<blockquote><pre>git clone ~/jdoe/project
+</pre></blockquote>
+
+<p>This would do the following:</p>
+
+<ul>
+<li>Create a directory <i>project</i> and initialize a repository in it.</li>
+<li>Copy all the commit objects and head references from the project into the
+    new repository.</li>
+<li>Add a <b>remote repository reference</b> named <i>origin</i> to the new
+    repository, and associate <i>origin</i> with <tt>~/jdoe/project</tt> as
+    described below. (Like <i>master</i>, <i>origin</i> is a default name used
+    by Git.)</li>
+<li>Add <b>remote heads</b> named <i>origin/[head-name]</i> that correspond to
+    the heads in the remote repository.</li>
+<li>Set up one head in the repository to <b>track</b> the corresponding
+    <i>origin/[current-head-name]</i> head, namely the one that was currently
+    active in the repository being cloned.</li>
+</ul>
+
+<p>A <b>remote repository reference</b> is a name Git uses to refer to the
+remote repository. Generally it will be <i>origin</i>. Among other things, Git
+internally associates the <i>remote-specification</i> with the remote repository
+reference, so you never need to refer to the original repository again.</p>
+
+<p>A branch that <b>tracks</b> a remote branch retains an internal reference to
+the remote branch. This is a convenience that allows you to avoid typing the
+name of the remote branch in many situations, as will be described below.</p>
+
+<p>The important thing to note is that you now have a complete copy of your
+friend's entire repository. When you branch, commit, merge, or otherwise operate
+on the repository, you operate only on your own repository. Git only interacts
+with your friend's repository when you specifically ask it to do so.</p>
+
+<p>Say your friend's repository looked like this:</p>
+
+<blockquote><pre>                +---------------(E)
+               /                 |
+(A) -- (B) -- (C) -- (D)         |
+                      |          |
+                    master    feature
+                      |
+                     HEAD
+</pre></blockquote>
+
+<p>After cloning, your repository would look like:</p>
+
+<blockquote><pre>                +-------------- (E)
+               /                 |
+(A) -- (B) -- (C) -- (D)         |
+                      |          |
+     origin/master, master    origin/feature
+                      |
+                     HEAD
+</pre></blockquote>
+
+<p>If you would like to work with the <i>origin/feature</i> remote branch
+locally, you should manually set up a tracking branch. This is done with the
+following command:</p>
+
+<blockquote><pre>git branch --track [new-local-branch] [remote-branch]
+</pre></blockquote>
+
+<p>In our example, that command would be <tt>git branch --track feature
+origin/feature</tt>. Note that the <tt>--track</tt> option is on by default and
+thus redundant (but I like to keep it in anyway, for clarity).</p>
+
+<h2 id="remote-pull">Receiving Changes from the Remote Repository</h2>
+
+<p>After you have cloned the repository, your friend adds new commits to his
+repository. How do you get copies of those changes?</p>
+
+<p>The command <tt>git fetch [remote-repository-reference]</tt> retrieves the new commit
+objects in your friend's repository and creates and/or updates the remote heads
+accordingly. By default, <i>[remote-repository-reference]</i> is
+<i>origin</i>.</p>
+
+<p>Say your friend's repository now looks like this:</p>
+
+<blockquote><pre>                +-------- (E) -- (F) -- (G)
+               /                         |
+(A) -- (B) -- (C) -- (D) -- (H)          |
+                             |           |
+                           master     feature
+                             |
+                            HEAD
+</pre></blockquote>
+
+<p>After a <tt>git fetch</tt>, your repository would look like this:</p>
+
+<blockquote><pre>                +------------ (E) ------------ (F) ---- (G)
+               /               |                         |
+(A) -- (B) -- (C) -- (D) --------------- (H)             |
+                      |        |          |              |
+                    master  feature origin/master  origin/feature
+                      |
+                     HEAD
+</pre></blockquote>
+
+<p>Note that your own heads are unaffected. The only difference is that the
+remote heads, those starting with “origin/”, are updated, and the
+new commit objects have been added to the repository.</p>
+
+<p>Now, you want to update your <i>master</i> and <i>feature</i> heads to
+reflect your friend's changes. This is done with a merge, usually done with
+<tt>git pull</tt>. The general syntax is:</p>
+
+<blockquote><pre>git pull [remote-repository-reference] [remote-head-name]
+</pre></blockquote>
+
+<p>This will merge the head named
+<i>[remote-repository-reference]/[remote-head-name]</i> into <i>HEAD</i>.</p>
+
+<p>Git provides two features to make this simpler. First, if a head is set up
+with tracking, a simple <tt>git pull</tt> with no arguments will merge the
+correct remote head. Second, <tt>git pull</tt> will perform a <tt>fetch</tt>
+automatically, so you rarely need to call <tt>git fetch</tt> yourself.</p>
+
+<p>Thus, in the above example, if you called <tt>git pull</tt> on your
+repository, your <i>master</i> head would be moved forward to commit (H):</p>
+
+<blockquote><pre>                +-------- (E) ------------- (F) ----- (G)
+               /           |                           |
+(A) -- (B) -- (C) -- (D) ------------ (H)              |
+                           |           |               |
+                        feature  origin/master,  origin/feature
+		                     master
+                                       |
+                                      HEAD
+</pre></blockquote>
+
+<h2 id="remote-push">Sending Changes to the Remote Repository</h2>
+
+<p>Now, say that you make changes to your own repository. You want to send these
+changes to your friend's repository.</p>
+
+<p>The command <tt>git push</tt>, logically doing the opposite of <tt>pull</tt>,
+sends data to the remote server. Its full syntax is:</p>
+
+<blockquote><pre>git push [remote-repository-reference] [remote-head-name]
+</pre></blockquote>
+
+<p>When this command is called, Git directs the remote repository to do the
+following:</p>
+
+<ul>
+<li>Add new commit objects sent by the pushing repository.</li>
+<li>Set <i>[remote-head-name]</i> to point to the same commit that it points to
+    on the pushing repository.</li>
+</ul>
+
+<p>On the sending repository, Git also updates the corresponding remote head
+reference.</p>
+
+<p>If no arguments are given to <tt>git push</tt>, it will push all the branches
+in the repository that are set up for tracking.</p>
+
+<h2 id="remote-fast-forward">Pushing and Fast Forward Merges</h2>
+
+<p>Git requires that <b>the push result in a fast-forward merge on the remote
+repository</b>. That means that, before the merge, the remote head points to an
+ancestor of the commit that it will point to after the merge. If this is not the
+case, Git will complain, and this complaint should be taken seriously.</p>
+
+<p>The reason for this is as follows. Each branch should contain an
+incrementally improving version of the project. A fast forward merge always
+indicates simple improvement on a branch, as the head is only pushed forward and
+not shifted to a different place on the tree. If the head moves to a different
+place on the tree, then information on how the branch arrived at its most recent
+state is lost.</p>
+
+<p>For example, imagine that the remote repository looks like this:</p>
+
+<blockquote><pre>(A) -- (B) -- (C)
+               |
+              master
+</pre></blockquote>
+
+<p>And your cloned repository is changed to look like this:</p>
+
+<blockquote><pre>         +------------- (D)
+        /                |
+(A) -- (B) -- (C)        |
+               |         |
+             other     master
+</pre></blockquote>
+
+<p>Now, if you push <i>master</i> to the remote repository, it will look like
+this:</p>
+
+<blockquote><pre>         +------------- (D)
+        /                |
+(A) -- (B) -- (C)        |
+                         |
+                       master
+</pre></blockquote>
+
+<p>Now (C) is a dangling commit. Moreover, the <i>master</i> branch has lost all
+record that it used to point to (C). Thus, (C) is no longer part of the history
+of <i>master</i>.</p>
+
+<p>Relatedly, what happens when you attempt to <tt>pull</tt> changes from the
+remote repository, which do not result in a fast forward merge? This can happen,
+for example, when you make changes on a branch in your local repository and
+branch changes on the remote repository as well. Consider this situation:</p>
+
+<blockquote><pre>                                     +-- (D)
+                                    /     |
+(A) -- (B) -- (C)           (A) -- (B)    |
+               |                          |
+             master                     master
+
+Your repository             Remote repository
+</pre></blockquote>
+
+<p>This may arise if, say, you last pulled from the repository when
+<tt>master</tt> was at commit (B), you did work and advanced <tt>master</tt> to
+commit (C), and another developer, working on the remote repository, did
+different work to advance <tt>master</tt> to (D).
+
+</p><p>Now, you pull <tt>master</tt> from the remote repository. What should happen?
+It was once the case that Git would produce an error, but now it does something
+smart: it merges the two changes into a new commit, and moves <tt>master</tt> to
+that new merge commit.</p>
+
+<blockquote><pre>         +--- (D) ---+
+        /             \
+(A) -- (B) -- (C) -- (E)
+                      |
+                    master
+</pre></blockquote>
+
+<p>Alternately, you can use <tt>rebasing</tt>, explained on the next page, to
+rewrite your commit (C). However, the best approach is to avoid this problem by
+placing all of your own work on separate branches until you are ready to
+incorporate them, and then do the incorporation quickly before anyone else has a
+chance to update the remote repository.</p>
+
+<h2 id="remote-branches">Adding and Deleting Branches Remotely</h2>
+
+<p>To create a new branch on the remote repository, use the following commands,
+while the new branch is your current head. Let the remote repository reference
+be <i>origin</i>, and the current branch name be <i>new-branch</i>.</p>
+
+<blockquote><pre>git push origin new-branch
+git checkout [some-other-branch]
+git branch -f new-branch origin/new-branch
+git checkout new-branch
+</pre></blockquote>
+
+<p>The first command will first create the appropriate head in the remote
+repository and push the new branch commits out. The remaining three are used to
+recreate the new branch to track the remote branch.</p>
+
+<p>As of Git 1.7, you can perform the above procedure using an option to <tt>git
+push</tt>:</p>
+
+<blockquote><pre>git push --set-upstream origin new-branch
+</pre></blockquote>
+
+<p>There are also options <tt>--track</tt> and <tt>--set-upstream</tt> for
+<tt>git branch</tt> to achieve similar effects.</p>
+
+<p>To delete a branch on the remote repository, use the following command:</p>
+
+<blockquote><pre>git push [remote-repository-reference] :[head-name]
+</pre></blockquote>
+
+<p>That is, put a colon before the head name, which means to push “no
+data” into that head on the remote repository.</p>
+
+<p>To list the available remote branches, use <tt>git branch -r</tt>.</p>
+
+<h2 id="central-repository">Git with a Central Repository</h2>
+
+<p>If you understand how Git transmits information between repositories using
+<tt>push</tt> and <tt>pull</tt>, then setting up a central repository for a
+project is simple. Developers simply do their own work and push and pull to the
+central repository.</p>
+
+<p>When creating the central repository, you can use a “bare”
+repository. This is a repository that has no working files, only repository
+information. This is useful because a central repository shouldn't have anyone
+editing on it; it should only receive pushes and pulls.</p>
+
+<p>Setting up a Git central repository that is accessible by remote protocol is
+tricky. The easiest way to do it is to use an existing system such as
+<a href="http://scie.nti.st/2007/11/14/hosting-git-repositories-the-easy-and-secure-way">Gitosis</a>
+or <a href="http://github.com/">GitHub</a>.</p>
+
+<p><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-5.shtml">Go on to the next page: Rebasing</a></p>
+
+</div>
+
+
+<div class="footer">
+
+Copyright © 2000-2015 Charles Duan.<br>
+
+My e-mail address is “website.comments” (without the quotes)
+followed by an @ symbol, my first initial and last name concatenated, a dot, and
+“com.”
+
+</div>
+
+
+
+
+</body></html>

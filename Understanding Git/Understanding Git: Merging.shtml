@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="Understanding%20Git:%20Merging_files/stylesheet.css">
+<title>Understanding Git: Merging</title>
+</head>
+<body>
+
+
+
+<div class="title">
+<h1>Understanding Git: Merging</h1>
+</div>
+
+<!--
+nav-header.shtml
+
+Navigation bar, to be placed in header. Contains links to the basic sections of
+this site.
+
+-->
+<div class="nav-header">
+
+<div class="nav-header-top">
+ <b>Navigation</b>
+</div>
+
+<div>
+ <b><a href="http://www.sbf5.com/%7Ecduan/" alt="Home page">Home</a></b>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/download/">Downloads</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/technical/">Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/writings/">Non-Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/misc/">Miscellaneous</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/links.shtml">Links</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/nav-help.shtml">Help</a>
+</div>
+
+<div>
+  <a href="http://cd2dc.tumblr.com/about">BBQ and Fried Chicken</a>
+</div>
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-4775089164349825";
+/* Ad */
+google_ad_slot = "3363410592";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript" src="Understanding%20Git:%20Merging_files/show_ads.js">
+</script>
+
+</div>
+
+
+<div class="content">
+
+<div class="sub-nav-header">
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/">Introduction</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-1.shtml">1: Repositories</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-2.shtml">2: Branching</a></span>
+<span>3: Merging</span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-4.shtml">4: Collaborating</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-5.shtml">5: Rebasing</a></span>
+</div>
+
+<h2>In This Section</h2>
+
+<ul>
+<li><a href="#merging">Merging</a></li>
+<li><a href="#merge-conflicts">Resolving Conflicts</a></li>
+<li><a href="#fast-forwards">Fast Forward Merges</a></li>
+<li><a href="#merge-patterns">Common Merge Use Patterns</a></li>
+<li><a href="#delete-branch">Deleting a Branch</a></li>
+</ul>
+
+<h2 id="merging">Merging</h2>
+
+<p>After you have finished implementing a new feature on a branch, you want to
+bring that new feature into the main branch, so that everyone can use it. You
+can do so with the <tt>git merge</tt> or <tt>git pull</tt> command.
+
+</p><p>The syntax for the commands is as follows:
+
+</p><blockquote><pre>git merge [head]
+git pull . [head]
+</pre></blockquote>
+
+<p>They are identical in result. (Though the <tt>merge</tt> form seems simpler
+for now, the reason for the <tt>pull</tt> form will become apparent when
+discussing multiple developers.)
+
+</p><p>These commands perform the following operations. Let the current head be
+called <i>current</i>, and the head to be merged called <i>merge</i>.
+
+</p><ol>
+<li>Identify the common ancestor of <i>current</i> and <i>merge</i>. Call it
+    <i>ancestor-commit</i>.</li>
+<li>Deal with the easy cases. If the <i>ancestor-commit</i> equals <i>merge</i>,
+    then do nothing. If <i>ancestor-commit</i> equals <i>current</i>, then do a
+    <b>fast forward merge</b>.</li>
+<li>Otherwise, determine the changes between the <i>ancestor-commit</i> and
+    <i>merge</i>.</li>
+<li>Attempt to merge those changes into the files in <i>current</i>.</li>
+<li>If there were no conflicts, create a new commit, with two parents,
+    <i>current</i> and <i>merge</i>. Set <i>current</i> (and <i>HEAD</i>) to
+    point to this new commit, and update the working files for the project
+    accordingly.</li>
+<li>If there was a conflict, insert appropriate conflict markers and inform the
+    user. No commit is created.</li>
+</ol>
+
+<p><b>Important note</b>: Git can get very confused if there are uncommitted
+changes in the files when you ask it to perform a merge. So make sure to commit
+whatever changes you have made so far before you merge.</p>
+
+<p>So, to complete the above example, say you check out the <i>master</i> head
+again and finish writing up the new data for your paper. Now you want to bring
+in those changes you made to the headers.</p>
+
+<p>The repository looks like this:</p>
+
+<blockquote><pre>         +---------- (D)
+        /             |
+(A) -- (B) -- (C) -------------- (E)
+                      |           |
+                 fix-headers    master
+                                  |
+                                 HEAD
+</pre></blockquote>
+
+<p>where (E) is the commit reflecting the completed version with the new
+data.</p>
+
+<p>You would run:</p>
+
+<blockquote><pre>git merge fix-headers
+</pre></blockquote>
+
+<p>If there are no conflicts, the resulting respository looks like this:</p>
+
+<blockquote><pre>         +---------- (D) ---------------+
+        /             |                  \
+(A) -- (B) -- (C) -------------- (E) -- (F)
+                      |                  |
+                 fix-headers           master
+                                         |
+                                        HEAD
+</pre></blockquote>
+
+<p>The merge commit is (F), having parents (D) and (E). Because (B) is the
+common ancestor between (D) and (E), the files in (F) should contain the changes
+between (B) and (D), namely the heading fixes, incorporated into the files from
+(E).</p>
+
+<p><b>Note on terminology</b>: When I say “merge head A <i>into</i> head
+B,” I mean that head B is the current head, and you are drawing changes
+from head A into it. Head B gets updated; nothing is done to head A. (If you
+replace the word “merge” with the word “pull,” it may
+make more sense.)</p>
+
+<h2 id="merge-conflicts">Resolving Conflicts</h2>
+
+<p>A conflict arises if the commit to be merged in has a change in one place,
+and the current commit has a change in the same place. Git has no way of telling
+which change should take precedence.</p>
+
+<p>To resolve the commit, edit the files to fix the conflicting changes. Then
+run <tt>git add</tt> to add the resolved files, and run <tt>git commit</tt> to
+commit the repaired merge. Git remembers that you were in the middle of a merge,
+so it sets the parents of the commit correctly.</p>
+
+<h2 id="fast-forwards">Fast Forward Merges</h2>
+
+<p>A fast forward merge is a simple optimization for merging. Say your
+repository looks like this:</p>
+
+<blockquote><pre>                +-- (D) -- (E)
+               /            |
+(A) -- (B) -- (C)           |
+               |            |
+            current     to-merge
+               |
+              HEAD
+</pre></blockquote>
+
+<p>and you run <tt>git merge to-merge</tt>. In this case, all Git needs to do is
+set <i>current</i> to point to (E). Since (C) is the common ancestor, there are
+no changes to actually “merge.”</p>
+
+<p>Hence, the resulting merged repository looks like:</p>
+<blockquote><pre>                +-- (D) -- (E)
+               /            |
+(A) -- (B) -- (C)           |
+                            |
+                    to-merge, current
+                                 |
+                                HEAD
+</pre></blockquote>
+
+<p>That is, <i>to-merge</i> and <i>current</i> both point to commit (E), and
+<i>HEAD</i> still points to <i>current</i>.</p>
+
+<p>Note an important difference: no new commit object is created for the merge.
+Git only shifts the head pointers around.</p>
+
+<h2 id="merge-patterns">Common Merge Use Patterns</h2>
+
+<p>There are two common reasons to merge two branches. The first, as explained
+above, is to draw the changes from a new feature branch into the main
+branch.</p>
+
+<p>The second use pattern is to draw the main branch into a feature branch you
+are developing. This keeps the feature branch up to date with the latest bug
+fixes and new features added to the main branch. Doing this regularly reduces
+the risk of creating a conflict when you merge your feature into the main
+branch.</p>
+
+<p>One disadvantage of doing the above is that your feature branch will end up
+with a lot of merge commits. An alternative that solves this problem is
+<a href="http://www.sbf5.com/%7Ecduan/technical/git/git-5.shtml">rebasing</a>, although that comes with problems of its
+own.</p>
+
+<h2 id="delete-branch">Deleting a Branch</h2>
+
+<p>After you have merged a development branch into the main branch, you probably
+don’t need the development branch anymore. Hence, you may want to delete it so
+it doesn’t clutter your <tt>git branch</tt> listing.</p>
+
+<p>To delete a branch, use <tt>git branch -d [head]</tt>. This simply removes
+the specified head from the repository’s list of heads.</p>
+
+<p>For example, in this repository from above:</p>
+
+<blockquote><pre>         +---------- (D) ---------------+
+        /             |                  \
+(A) -- (B) -- (C) -------------- (E) -- (F)
+                      |                  |
+                 fix-headers           master
+                                         |
+                                        HEAD
+</pre></blockquote>
+
+<p>we probably don’t need the <i>fix-headers</i> head any more. So we can
+use:</p>
+
+<blockquote><pre>git branch -d fix-headers
+</pre></blockquote>
+
+<p>and the resulting repository looks like:</p>
+
+<blockquote><pre>         +---------- (D) ---------------+
+        /                                \
+(A) -- (B) -- (C) -------------- (E) -- (F)
+                                         |
+                                       master
+                                         |
+                                        HEAD
+</pre></blockquote>
+
+<p><b>Important note</b>: <tt>git branch -d</tt> will cause an error if the
+branch to be deleted is not reachable from another head. Why? Consider the
+following repository:</p>
+
+<blockquote><pre>         +----------- (E)
+        /              |
+(A) -- (B) -- (C)      |
+               |       |
+             head1   head2
+</pre></blockquote>
+
+<p>Say you delete <i>head2</i>. Now how can you use commit (E)? You can’t
+check it out, because it isn’t a head. And it doesn’t appear in any
+logs or anywhere else, because it isn’t an ancestor of <i>head1</i>. So
+commit (E) is practically useless. In Git terminology, it is a “dangling
+commit,” and its information is lost.</p>
+
+<p>Git does allow you to use the <tt>-D</tt> option to force deletion of a
+branch that would create a dangling commit. However, it should be a rare
+situation that you want to do that. <b>Think very carefully before using <tt>git
+branch -D</tt>.</b></p>
+
+<p><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-4.shtml">Go on to the next page: Collaborating</a></p>
+
+</div>
+
+
+<div class="footer">
+
+Copyright © 2000-2015 Charles Duan.<br>
+
+My e-mail address is “website.comments” (without the quotes)
+followed by an @ symbol, my first initial and last name concatenated, a dot, and
+“com.”
+
+</div>
+
+
+
+
+</body></html>

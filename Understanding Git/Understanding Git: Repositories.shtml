@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="Understanding%20Git:%20Repositories_files/stylesheet.css">
+<title>Understanding Git: Repositories</title>
+</head>
+<body>
+
+
+
+<div class="title">
+<h1>Understanding Git: Repositories</h1>
+</div>
+
+<!--
+nav-header.shtml
+
+Navigation bar, to be placed in header. Contains links to the basic sections of
+this site.
+
+-->
+<div class="nav-header">
+
+<div class="nav-header-top">
+ <b>Navigation</b>
+</div>
+
+<div>
+ <b><a href="http://www.sbf5.com/%7Ecduan/" alt="Home page">Home</a></b>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/download/">Downloads</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/technical/">Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/writings/">Non-Technical Writings</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/misc/">Miscellaneous</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/links.shtml">Links</a>
+</div>
+
+<div>
+ <a href="http://www.sbf5.com/%7Ecduan/nav-help.shtml">Help</a>
+</div>
+
+<div>
+  <a href="http://cd2dc.tumblr.com/about">BBQ and Fried Chicken</a>
+</div>
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-4775089164349825";
+/* Ad */
+google_ad_slot = "3363410592";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript" src="Understanding%20Git:%20Repositories_files/show_ads.js">
+</script>
+
+</div>
+
+
+<div class="content">
+
+<div class="sub-nav-header">
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/">Introduction</a></span>
+<span>1: Repositories</span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-2.shtml">2: Branching</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-3.shtml">3: Merging</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-4.shtml">4: Collaborating</a></span>
+<span><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-5.shtml">5: Rebasing</a></span>
+</div>
+
+<h2>In This Section</h2>
+
+<ul>
+<li><a href="#repositories">Repository Contents</a></li>
+<li><a href="#commit-objects">Commit Objects</a></li>
+<li><a href="#heads">Heads</a></li>
+<li><a href="#simple-example">A Simple Repository</a></li>
+<li><a href="#commit-names">Referring to a Commit</a></li>
+</ul>
+
+<h2 id="repositories">Repository Contents</h2>
+
+<p>
+The purpose of Git is to manage a project, or a set of files, as they change
+over time. Git stores this information in a data structure called a
+repository.</p>
+
+<p>A git <b>repository</b> contains, among other things, the following:</p>
+
+<ul>
+<li>A set of <b>commit objects</b>.</li>
+<li>A set of references to commit objects, called <b>heads</b>.</li>
+</ul>
+
+<p>The Git repository is stored in the same directory as the project itself, in
+a subdirectory called <tt>.git</tt>. Note differences from central-repository
+systems like CVS or Subversion:</p>
+
+<ul>
+<li>There is only one <tt>.git</tt> directory, in the root directory of the
+    project.</li>
+<li>The repository is stored in files alongside the project. There is no central
+    server repository.</li>
+</ul>
+
+<h2 id="commit-objects">Commit Objects</h2>
+
+<p>A <b>commit object</b> contains three things:</p>
+
+<ul>
+<li>A set of <b>files</b>, reflecting the state of a project at a given point in
+    time.</li>
+<li>References to <b>parent commit objects</b>.</li>
+<li>An <b>SHA1 name</b>, a 40-character string that uniquely identifies the
+commit object. The name is composed of a hash of relevant aspects of the commit,
+so identical commits will always have the same name.</li>
+</ul>
+
+<p>The parent commit objects are those commits that were edited to produce the
+subsequent state of the project. Generally a commit object will have one parent
+commit, because one generally takes a project in a given state, makes a few
+changes, and saves the new state of the project. The section below on merges
+explains how a commit object could have two or more parents.</p>
+
+<p>A project always has one commit object with no parents. This is the first
+commit made to the project repository.</p>
+
+<p>Based on the above, you can visualize a repository as a directed acyclic
+graph of commit objects, with pointers to parent commits always pointing
+backwards in time, ultimately to the first commit. Starting from any commit, you
+can walk along the tree by parent commits to see the history of changes that led
+to that commit.</p>
+
+<p>The idea behind Git is that version control is all about manipulating this
+graph of commits. Whenever you want to perform some operation to query or
+manipulate the repository, you should be thinking, “how do I want to query
+or manipulate the graph of commits?”</p>
+
+<h2 id="heads">Heads</h2>
+
+<p>A <b>head</b> is simply a reference to a commit object. Each head has a name.
+By default, there is a head in every repository called <i>master</i>. A
+repository can contain any number of heads. At any given time, one head is
+selected as the “current head.” This head is aliased to <i>HEAD</i>,
+always in capitals.</p>
+
+<p>Note this difference: a “head” (lowercase) refers to any one of
+the named heads in the repository; “<i>HEAD</i>” (uppercase) refers
+exclusively to the currently active head. This distinction is used frequently in
+Git documentation. I also use the convention that names of heads, including
+<i>HEAD</i>, are set in italics.</p>
+
+<h2 id="simple-example">A Simple Repository</h2>
+
+<p>To create a repository, create a directory for the project if it
+doesn’t exist, enter it, and run the command <tt>git init</tt>.
+The directory does not need to be empty.</p>
+
+<blockquote><pre>mkdir [project]
+cd [project]
+git init
+</pre></blockquote>
+
+<p>This will create a <tt>.git</tt> directory in the <tt>[project]</tt>
+directory.</p>
+
+<p>To create a commit, you need to do two things:</p>
+
+<ol>
+<li>Tell Git which files to include in the commit, with <tt>git add</tt>. If a
+    file has not changed since the previous commit (the “parent”
+    commit), Git will automatically include it in the commit you are about to
+    perform. Thus, you only need to add files that you have added or modified.
+    Note that it adds directories recursively, so <tt>git add .</tt> will add
+    everything that has changed.</li>
+<li>Call <tt>git commit</tt> to create the commit object. The new commit object
+    will have the current <i>HEAD</i> as its parent (and then, after the commit
+    is complete, <i>HEAD</i> will point to the new commit object).</li>
+</ol>
+
+<p>As a shortcut, <tt>git commit -a</tt> will automatically add all modified
+files (but not new ones).</p>
+
+<p>Note that if you modify a file but do not add it, then Git will include the
+previous version (before modifications) to the commit. The modified file will
+remain in place.</p>
+
+<p>Say you create three commits this way. Your repository will look like
+this:</p>
+
+<blockquote><pre>----&gt;  time  -----&gt;
+
+(A) &lt;-- (B) &lt;-- (C)
+                 ^
+                 |
+               master
+                 ^
+                 |
+                HEAD
+</pre></blockquote>
+
+<p>where (A), (B), and (C) are the first, second, and third commits,
+respectively.</p>
+
+<p>Other commands that are useful at this point:</p>
+
+<ul>
+<li><tt>git log</tt> shows a log of all commits starting from <i>HEAD</i> back
+    to the initial commit. (It can do more than that, of course.)</li>
+<li><tt>git status</tt> shows which files have changed between the current
+    project state and <i>HEAD</i>. Files are put in one of three categories: new
+    files that haven’t been added (with <tt>git add</tt>), modified files
+    that haven’t been added, and files that have been added.</li>
+<li><tt>git diff</tt> shows the diff between <i>HEAD</i> and the current project
+    state. With the <tt>--cached</tt> option it compares added files against
+    <i>HEAD</i>; otherwise it compares files not yet added.*</li>
+<li><tt>git mv</tt> and <tt>git rm</tt> mark files to be moved (rename) and
+    removed, respectively, much like <tt>git add</tt>.</li>
+</ul>
+
+<p style="font-size: 70%; opacity: 0.6">*More precisely, <tt>git diff</tt> compares the
+staging area, that is, <i>HEAD</i> as modified by all added files, against the
+current state of all added files. Thus, if you add some but not all changed
+files and then run <tt>git diff</tt>, you will see only files that are changed
+but not added.</p>
+
+<p>My personal workflow usually looks like:</p>
+
+<ol>
+<li>Do some programming.</li>
+<li><tt>git status</tt> to see what files I changed.</li>
+<li><tt>git diff [file]</tt> to see exactly what I modified.
+</li><li><tt>git commit -a -m [message]</tt> to commit.
+</li></ol>
+
+<h2 id="commit-names">Referring to a Commit</h2>
+
+<p>Now that you’ve created commits, how do you refer to a specific commit?
+Git provides many ways to do so. Here are a few:</p>
+
+<ul>
+<li>By its SHA1 name, which you can get from <tt>git log</tt>.
+</li><li>By the first few characters of its SHA1 name.
+</li><li>By a head. For example, <tt>HEAD</tt> refers to the commit object referenced
+  by <i>HEAD</i>. You can also use the name, such as <tt>master</tt>.
+</li><li>Relative to a commit. Putting a caret (^) after a commit name retrieves the
+  parent of that commit. For example, <i>HEAD^</i> is the parent of the current
+  head commit.
+</li></ul>
+
+<p><a href="http://www.sbf5.com/%7Ecduan/technical/git/git-2.shtml">Go on to the next page: Branching</a></p>
+
+</div>
+
+
+<div class="footer">
+
+Copyright © 2000-2015 Charles Duan.<br>
+
+My e-mail address is “website.comments” (without the quotes)
+followed by an @ symbol, my first initial and last name concatenated, a dot, and
+“com.”
+
+</div>
+
+
+
+
+</body></html>
